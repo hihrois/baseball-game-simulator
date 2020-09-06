@@ -1,10 +1,18 @@
-from game import *
-from setting import *
-from batting import *
+import setting
+import result
+from simulate import *
+import output
 
-# 打撃成績の読み込み
-read_batting_stats(FILE_NAME)
+# クラス宣言
+setting = setting.Setting()
+result = result.Result(setting.NUM_OF_GAMES)
+output = output.Output()
 
 # シミュレート
-for game_counter in range(NUM_OF_GAMES):
-    simulate_game()
+simulate(setting, result)
+
+# 結果の集計
+result.aggregate_result(setting, output)
+
+# 結果の出力
+output.output_result(setting)
