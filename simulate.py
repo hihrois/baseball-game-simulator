@@ -2,4 +2,4 @@ from game import *
 
 def simulate(setting, result):
     for game_counter in range(setting.NUM_OF_GAMES):
-        game(game_counter, result)
+        game(setting, game_counter, result)
