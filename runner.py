@@ -1,3 +1,45 @@
+from numpy import *
+
+#runnerを0~7の数字に変換する関数
+def runner207(runner):
+	for i in range(8):
+		num_list = [0, 1, 2, 12, 3, 13, 23, 123]
+		if runner == num_list[i]:
+			break
+	return i
+
+#eventを0~6の数字に変換する関数
+def event206(event):
+	for i in range(7):
+		event_list = ["single", "double", "triple", "hr", "bb", "so", "bonda"]
+		if event == event_list[i]:
+			break
+	return i
+
+#ランナーの数を数える関数(1 -> 1, 12 -> 2, 0 -> 0)
+def count_run(runner):
+	if runner == 0:
+		return 0
+	else:
+		return len(str(runner))
+			
+#「チェンジになったけど得点は入った」を処理する関数（好ましくない、将来的に改善が必要）	
+def run_and_change_cal(runner, event):
+	run = 0
+	#参照表(runner, event, その時に出力する得点)
+	#1, 2, 12, 3, 13, 23, 123
+	ore_run = [[3, "single", 1], [13, "single", 1], [23, "single", 1], [123, "single", 1], [2, "double", 1], [12, "double", 1], [3, "double", 1], [13, "double", 1], [23, "double", 2], [123, "double", 2]]
+	if event == "bonda" or event == "so" or event == "bb":
+		return run
+	elif event == "triple":
+		return count_run(runner)
+	else:
+		for i in range(10):
+			if event == ore_run[i][1] and runner == ore_run[i][0]:
+				run = ore_run[i][2]
+				break
+		return run
+
 #関数『走者』	
 def run_move(outcount, runner, event, order, TRS, N):
     length = len(TRS[outcount][runner207(runner)][event206(event)])
@@ -18,13 +60,13 @@ def run_move(outcount, runner, event, order, TRS, N):
 
     #得点計算(アウトカウントとランナーの数+1から、次のアウトカウントと次のランナーを引いた数が得点になる)
 	#チェンジ判定
-	change_flg = 0
-	if outcount > next_outcount:
-		run = run_and_change_cal(runner, event)
-		global left
-		left += count_run(runner) - run
-		change_flg = 1
-	else :
-		run = outcount + count_run(runner) + 1 - next_outcount - count_run(next_runner)
-	
+    change_flg = 0
+    if outcount > next_outcount:
+        run = run_and_change_cal(runner, event)
+        # global left
+		# left += count_run(runner) - run
+        change_flg = 1
+    else:
+        run = outcount + count_run(runner) + 1 - next_outcount - count_run(next_runner)
+
     return [next_outcount, next_runner, run, change_flg]

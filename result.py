@@ -6,7 +6,7 @@ class Result:
             self.run = None
 
     def __init__(self, NUM_OF_GAMES):
-        self.game_results = [Result.GameResult()] * NUM_OF_GAMES
+        self.game_results = [Result.GameResult() for _ in range(NUM_OF_GAMES)]
 
     # 集計関数
     def mean(self, run):
