@@ -2,17 +2,13 @@ from numpy import *
 
 #runnerを0~7の数字に変換する関数
 def runner207(runner):
-	for i in range(8):
-		num_list = [0, 1, 2, 12, 3, 13, 23, 123]
-		if runner == num_list[i]: break
-	return i
+	num_list = [0, 1, 2, 12, 3, 13, 23, 123]
+	return num_list.index(runner)
 
 #eventを0~6の数字に変換する関数
 def event206(event):
-	for i in range(7):
-		event_list = ["single", "double", "triple", "hr", "bb", "so", "bonda"]
-		if event == event_list[i]: break
-	return i
+    event_list = ["single", "double", "triple", "hr", "bb", "so", "bonda"]
+    return event_list.index(event)
 
 #ランナーの数を数える関数(1 -> 1, 12 -> 2, 0 -> 0)
 def count_run(runner):
@@ -25,15 +21,15 @@ def run_and_change_cal(runner, event):
 	#参照表(runner, event, その時に出力する得点)
 	#1, 2, 12, 3, 13, 23, 123
 	ore_run = [
-        [3, "single", 1], 
-        [13, "single", 1], 
-        [23, "single", 1], 
+        [3,   "single", 1], 
+        [13,  "single", 1], 
+        [23,  "single", 1], 
         [123, "single", 1], 
-        [2, "double", 1], 
-        [12, "double", 1], 
-        [3, "double", 1], 
-        [13, "double", 1], 
-        [23, "double", 2], 
+        [2,   "double", 1], 
+        [12,  "double", 1], 
+        [3,   "double", 1], 
+        [13,  "double", 1], 
+        [23,  "double", 2], 
         [123, "double", 2]
     ]
 	if event in ["bonda", "so", "bb"]: return run

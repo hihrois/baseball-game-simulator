@@ -26,11 +26,10 @@ class Batting:
         input: 打撃成績(list)
         output: 打撃成績を確率に変換したもの（list）
         """
+        NUM_OF_BATTING_STATS_COLUMNS = 7
 
-        if len(batting_stats) != 7:
+        if len(batting_stats) != NUM_OF_BATTING_STATS_COLUMNS:
             raise Exception("打撃成績が正しく入力されていません")
-
-        # batting_stats = [打席、総安打、二塁打、三塁打、本塁打、四死球、三振] を
 
         probability = [
             batting_stats[1] - (batting_stats[2] + batting_stats[3] + batting_stats[4]), 
