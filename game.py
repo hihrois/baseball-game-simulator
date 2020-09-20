@@ -26,7 +26,7 @@ def game(setting, game_counter, batting, result):
 		# or_memo_order.append([order, outcount, runner207(runner), run_list[inning - 1], 0])
 		#  print("%d番" % order)
 		#関数『打者』と関数『走塁』を呼び出す
-        event = str(batting.simulate_batting_result(batting_order, batting.batting_stats, outcount, runner207(runner)))
+        event = batting.simulate_batting_result(batting_order, batting.batting_stats, outcount, runner207(runner))
 		
 		#LWTS
         before_outcount, before_runner = [outcount, runner207(runner)]

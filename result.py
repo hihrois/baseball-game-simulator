@@ -19,8 +19,7 @@ class Result:
     def aggregate_result(self, setting, output):
         # 得点を1次元リスト化
         run = []
-        for game_result in self.game_results:
-            run.append(game_result.run)
+        for game_result in self.game_results: run.append(game_result.run)
         
         output_list = [
             ("mean", self.mean(run)), 

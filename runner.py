@@ -4,24 +4,20 @@ from numpy import *
 def runner207(runner):
 	for i in range(8):
 		num_list = [0, 1, 2, 12, 3, 13, 23, 123]
-		if runner == num_list[i]:
-			break
+		if runner == num_list[i]: break
 	return i
 
 #eventを0~6の数字に変換する関数
 def event206(event):
 	for i in range(7):
 		event_list = ["single", "double", "triple", "hr", "bb", "so", "bonda"]
-		if event == event_list[i]:
-			break
+		if event == event_list[i]: break
 	return i
 
 #ランナーの数を数える関数(1 -> 1, 12 -> 2, 0 -> 0)
 def count_run(runner):
-	if runner == 0:
-		return 0
-	else:
-		return len(str(runner))
+	if runner == 0: return 0
+	else: return len(str(runner))
 			
 #「チェンジになったけど得点は入った」を処理する関数（好ましくない、将来的に改善が必要）	
 def run_and_change_cal(runner, event):
@@ -40,10 +36,8 @@ def run_and_change_cal(runner, event):
         [23, "double", 2], 
         [123, "double", 2]
     ]
-	if event == "bonda" or event == "so" or event == "bb":
-		return run
-	elif event == "triple":
-		return count_run(runner)
+	if event in ["bonda", "so", "bb"]: return run
+	elif event == "triple": return count_run(runner)
 	else:
 		for i in range(10):
 			if event == ore_run[i][1] and runner == ore_run[i][0]:
