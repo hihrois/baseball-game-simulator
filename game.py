@@ -13,6 +13,8 @@ from runner import *
 # 		count_status_order[or_memo_order[i][0] - 1][or_memo_order[i][1]][or_memo_order[i][2]][or_memo_order[i][4] - or_memo_order[i][3]] += 1
 
 def game(setting, game_counter, batting, result):
+    if setting.IS_INDICATED_BOX_RESULT or setting.IS_INDICATED_GAME_RESULT: print("Game {}: ".format(game_counter + 1))
+
     #初期化
     inning, outcount, runner, batting_order = [1, 0, 0, 1]
     run_list = [0] * setting.INNING
@@ -27,6 +29,7 @@ def game(setting, game_counter, batting, result):
 		#  print("%d番" % order)
 		#関数『打者』と関数『走塁』を呼び出す
         event = batting.simulate_batting_result(batting_order, batting.batting_stats, outcount, runner207(runner))
+        if setting.IS_INDICATED_BOX_RESULT: print("BoxScore Result {}".format(event))
 		
 		#LWTS
         before_outcount, before_runner = [outcount, runner207(runner)]
@@ -67,5 +70,7 @@ def game(setting, game_counter, batting, result):
 
     _result = result.game_results[game_counter]
     _result.run = run_total
+
+    if setting.IS_INDICATED_GAME_RESULT: print("Run {}".format(run_total))
     
     return 0
