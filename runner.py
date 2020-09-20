@@ -28,7 +28,18 @@ def run_and_change_cal(runner, event):
 	run = 0
 	#参照表(runner, event, その時に出力する得点)
 	#1, 2, 12, 3, 13, 23, 123
-	ore_run = [[3, "single", 1], [13, "single", 1], [23, "single", 1], [123, "single", 1], [2, "double", 1], [12, "double", 1], [3, "double", 1], [13, "double", 1], [23, "double", 2], [123, "double", 2]]
+	ore_run = [
+        [3, "single", 1], 
+        [13, "single", 1], 
+        [23, "single", 1], 
+        [123, "single", 1], 
+        [2, "double", 1], 
+        [12, "double", 1], 
+        [3, "double", 1], 
+        [13, "double", 1], 
+        [23, "double", 2], 
+        [123, "double", 2]
+    ]
 	if event == "bonda" or event == "so" or event == "bb":
 		return run
 	elif event == "triple":

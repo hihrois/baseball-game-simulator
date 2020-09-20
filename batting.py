@@ -31,9 +31,17 @@ class Batting:
             raise Exception("打撃成績が正しく入力されていません")
 
         # batting_stats = [打席、総安打、二塁打、三塁打、本塁打、四死球、三振] を
-        # probability = ["single_hit", "two_base_hit", "three_base_hit", "homerun", "walk_or_hit_by_pitch", "strike_out", "others"] に変換
 
-        probability = [batting_stats[1] - (batting_stats[2] + batting_stats[3] + batting_stats[4]), batting_stats[2], batting_stats[3], batting_stats[4], batting_stats[5], batting_stats[6], batting_stats[0] - (batting_stats[1] + batting_stats[5] + batting_stats[6])]
+        probability = [
+            batting_stats[1] - (batting_stats[2] + batting_stats[3] + batting_stats[4]), 
+            batting_stats[2], 
+            batting_stats[3], 
+            batting_stats[4], 
+            batting_stats[5], 
+            batting_stats[6], 
+            batting_stats[0] - (batting_stats[1] + batting_stats[5] + batting_stats[6])
+        ]
+
         probability = list(map(lambda x: x / batting_stats[0], probability))
         
         return probability
