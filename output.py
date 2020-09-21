@@ -16,4 +16,5 @@ class Output:
         dt_now = dt_now.strftime('%Y%m%d%H%M%S')
         with open(setting.OUTPUT_FILE_NAME.replace("time", dt_now), 'w', newline="") as f:
             writer = csv.writer(f)
-            for output in self.output_array: writer.writerow([output.index_name, output.index])
+            for output in self.output_array:
+                writer.writerow([output.index_name, output.index])

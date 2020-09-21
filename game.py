@@ -13,7 +13,8 @@ from runner import *
 # 		count_status_order[or_memo_order[i][0] - 1][or_memo_order[i][1]][or_memo_order[i][2]][or_memo_order[i][4] - or_memo_order[i][3]] += 1
 
 def game(setting, game_counter, batting, result):
-    if setting.IS_INDICATED_BOX_RESULT or setting.IS_INDICATED_GAME_RESULT: print("Game {}: ".format(game_counter + 1))
+    if setting.IS_INDICATED_BOX_RESULT or setting.IS_INDICATED_GAME_RESULT:
+        print("Game {}: ".format(game_counter + 1))
 
     #初期化
     inning, outcount, runner, batting_order = [1, 0, 0, 1]
@@ -29,7 +30,8 @@ def game(setting, game_counter, batting, result):
 		#  print("%d番" % order)
 		#関数『打者』と関数『走塁』を呼び出す
         event = batting.simulate_batting_result(batting_order, batting.batting_stats, outcount, runner207(runner))
-        if setting.IS_INDICATED_BOX_RESULT: print("BoxScore Result {}".format(event))
+        if setting.IS_INDICATED_BOX_RESULT:
+            print("BoxScore Result {}".format(event))
 		
 		#LWTS
         before_outcount, before_runner = [outcount, runner207(runner)]
@@ -47,13 +49,17 @@ def game(setting, game_counter, batting, result):
 		
 		#  print("%dout %drunner run(%d)" % (outcount, runner, run))
         batting_order += 1 #打順を1つ進める
-        if batting_order == 10: batting_order = 1
+        if batting_order == 10:
+            batting_order = 1
+        
         run_list[inning - 1] += run #イニング得点を記録
 		
         if change_flg:
 			#or_memoの最後にイニング終了時得点を記録
-            for i in range(len(or_memo)): or_memo[i][3] = run_list[inning - 1]
-            for i in range(len(or_memo_order)): or_memo_order[i][4] = run_list[inning - 1]
+            for i in range(len(or_memo)):
+                or_memo[i][3] = run_list[inning - 1]
+            for i in range(len(or_memo_order)):
+                or_memo_order[i][4] = run_list[inning - 1]
 			#得点期待値表への書き込み
             # run_expection(or_memo)
             # run_expection_order(or_memo_order)
@@ -71,6 +77,7 @@ def game(setting, game_counter, batting, result):
     _result = result.game_results[game_counter]
     _result.run = run_total
 
-    if setting.IS_INDICATED_GAME_RESULT: print("Run {}".format(run_total))
+    if setting.IS_INDICATED_GAME_RESULT:
+        print("Run {}".format(run_total))
     
     return 0

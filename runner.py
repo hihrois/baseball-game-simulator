@@ -2,8 +2,8 @@ from numpy import *
 
 #runnerを0~7の数字に変換する関数
 def runner207(runner):
-	num_list = [0, 1, 2, 12, 3, 13, 23, 123]
-	return num_list.index(runner)
+    num_list = [0, 1, 2, 12, 3, 13, 23, 123]
+    return num_list.index(runner)
 
 #eventを0~6の数字に変換する関数
 def event206(event):
@@ -12,8 +12,8 @@ def event206(event):
 
 #ランナーの数を数える関数(1 -> 1, 12 -> 2, 0 -> 0)
 def count_run(runner):
-	if runner == 0: return 0
-	else: return len(str(runner))
+    if runner == 0: return 0
+    else: return len(str(runner))
 			
 #「チェンジになったけど得点は入った」を処理する関数（好ましくない、将来的に改善が必要）	
 def run_and_change_cal(runner, event):
