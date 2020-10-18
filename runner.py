@@ -10,7 +10,7 @@ def event206(event):
     event_list = ["single", "double", "triple", "hr", "bb", "so", "bonda"]
     return event_list.index(event)
 
-#ランナーの数を数える関数(1 -> 1, 12 -> 2, 0 -> 0)
+#ランナーの数を数える関数(1 -> 1, 12 -> 2, 0 -> 0)i
 def count_run(runner):
     if runner == 0: return 0
     else: return len(str(runner))
