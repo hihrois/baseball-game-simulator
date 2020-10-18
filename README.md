@@ -4,6 +4,9 @@ You can make unlimited patterns of batting order, and simulate it.
 This project has just begun and is not matured.  
 Please don't hesitate to join our project and edit codes!  
 
+If you want to know details, please visit my blog!  
+https://hihrois-1104o.hatenablog.com/entry/yakyuu-simyu-detail
+
 # Usage
 ## 1. Edit setting.py
 You need to set variables first. (e.g. number of games, number of innings, etc..)  
