@@ -18,7 +18,7 @@ Make a new .csv file (/batting_stats/) and write batting stats in it.
   
 In the simulator, players' ability is expressed as 7 dimensional vector.  
 The vector is consists of (number of) plate appearences, (all) hits, doubles, triples, homeruns, walk and hit by pitches, and knock outs.  
-batting_stats/sample.csv exsits initially, so refer it when you want to know about it.  
+batting_stats/sample.csv exsits initially, so refer to it when you want to know about it.  
   
 Be sure to change the valuable "BATTING_STATS_FILE_NAME" (in setting.py) correctly when you make a new .csv file.  
 
