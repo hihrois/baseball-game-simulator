@@ -31,4 +31,4 @@ Initially, average runs and standard deviation are available.
 (Sorry for poor. That is one of the function we should update soon... You can expand it yourself, of course.)
 
 # Author
-Let me(@3I1zmPds0weQwYm) know if you have any questions!
+Let me(twitter: @3I1zmPds0weQwYm) know if you have any questions!
