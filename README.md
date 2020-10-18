@@ -4,7 +4,7 @@ You can make unlimited patterns of batting order, and simulate it.
 This project has just begun and is not matured.  
 Please don't hesitate to join our project and edit codes!  
 
-If you want to know details, please visit my blog!  
+If you want to know details, please visit my blog!　(Japanese only)  
 https://hihrois-1104o.hatenablog.com/entry/yakyuu-simyu-detail
 
 # Usage
