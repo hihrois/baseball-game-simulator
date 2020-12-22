@@ -29,3 +29,39 @@ class Result:
 
         for _id, (index_name, index) in enumerate(output_list):
             output.output_array.append(output.index(_id, index_name, index))
+
+        self.compute_re(output)
+        self.compute_re_order(output)
+
+    def compute_re(self, output):
+        print("---------RE---------")
+        for outcount in range(3):#アウトカウント
+            for runner in range(8):#ランナー
+                num_list = [0, 1, 2, 12, 3, 13, 23, 123]
+                hoge = 0
+                for i in range(30):
+                    hoge += i * output.re_tmp[outcount][runner][i]
+                if sum(output.re_tmp[outcount][runner]) == 0:
+                    result = 0
+                else:
+                    result = hoge / sum(output.re_tmp[outcount][runner])
+                    output.re[outcount].append(result)
+                print("{}アウト {}ランナー　{}点".format(outcount, num_list[runner], result))
+        print("")
+
+    def compute_re_order(self, output):
+        print("---------RE split by batting order---------")
+        for batting_order in range(9):
+            for outcount in range(3):#アウトカウント
+                for runner in range(8):#ランナー
+                    num_list = [0, 1, 2, 12, 3, 13, 23, 123]
+                    hoge = 0
+                    for k in range(30):
+                        hoge += k * output.re_order_tmp[batting_order][outcount][runner][k]
+                    if sum(output.re_order_tmp[batting_order][outcount][runner]) == 0:
+                        result = 0
+                    else:
+                        result = hoge / sum(output.re_order_tmp[batting_order][outcount][runner])
+                        output.re_order[batting_order][outcount].append(result)
+                    print("{}番 {}アウト {}ランナー　{}点".format(batting_order + 1, outcount, num_list[runner], result))
+        print("")

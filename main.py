@@ -11,10 +11,11 @@ result = result.Result(setting.NUM_OF_GAMES)
 output = output.Output()
 
 # シミュレート
-simulate(setting, batting, result)
+simulate(setting, batting, result, output)
 
 # 結果の集計
 result.aggregate_result(setting, output)
 
 # 結果の出力
 output.output_result(setting)
+output.output_re(setting)

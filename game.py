@@ -2,18 +2,8 @@ from batting import *
 from constant import *
 from runner import *
 
-#得点期待値表への書き込みを行う関数、count_status= outcount, runner, 
-# def run_expection(or_memo):
-# 	for i in range(len(or_memo)):
-# 		count_status[or_memo[i][0]][or_memo[i][1]][or_memo[i][3] - or_memo[i][2]] += 1
-
-#打者別得点期待値表への書き込みを行う関数、count_status_order= runner, outcount, runner, 
-# def run_expection_order(or_memo_order):
-# 	for i in range(len(or_memo_order)):
-# 		count_status_order[or_memo_order[i][0] - 1][or_memo_order[i][1]][or_memo_order[i][2]][or_memo_order[i][4] - or_memo_order[i][3]] += 1
-
-def game(setting, game_counter, batting, result):
-    if setting.IS_INDICATED_BOX_RESULT or setting.IS_INDICATED_GAME_RESULT:
+def game(setting, game_counter, batting, result, output):
+    if setting.IS_INDICATED_BOX_RESULT or setting.IS_INDICATED_GAME_RESULT or (game_counter + 1) % 1000 == 0:
         print("Game {}: ".format(game_counter + 1))
 
     #初期化
@@ -26,9 +16,8 @@ def game(setting, game_counter, batting, result):
 		#得点期待値表制作用、[アウトカウント、ランナー、その時点でのイニング得点数、最後の０はイニング終了時の得点]
         or_memo.append([outcount, runner207(runner), run_list[inning - 1], 0])
 		#打順別得点期待値表制作用、[打順要素を追加]
-		# or_memo_order.append([order, outcount, runner207(runner), run_list[inning - 1], 0])
-		#  print("%d番" % order)
-		#関数『打者』と関数『走塁』を呼び出す
+        or_memo_order.append([batting_order, outcount, runner207(runner), run_list[inning - 1], 0])
+        #関数『打者』と関数『走塁』を呼び出す
         event = batting.simulate_batting_result(batting_order, batting.batting_stats, outcount, runner207(runner))
         if setting.IS_INDICATED_BOX_RESULT:
             print("BoxScore Result {}".format(event))
@@ -39,7 +28,6 @@ def game(setting, game_counter, batting, result):
         before_RE = RE[before_outcount][before_runner]
 		#Nを数える
         # LWTS_N[event206(event)] += 1
-
         outcount, runner, run, change_flg = run_move(outcount, runner, event, batting_order, TRS, N)
 		#LWTS
         after_RE = run if change_flg else run + RE[outcount][runner207(runner)]
@@ -47,7 +35,6 @@ def game(setting, game_counter, batting, result):
 		#イベント前後の得点期待値変動
         # LWTS[event206(event)] += after_RE - before_RE
 		
-		#  print("%dout %drunner run(%d)" % (outcount, runner, run))
         batting_order += 1 #打順を1つ進める
         if batting_order == 10:
             batting_order = 1
@@ -61,15 +48,13 @@ def game(setting, game_counter, batting, result):
             for i in range(len(or_memo_order)):
                 or_memo_order[i][4] = run_list[inning - 1]
 			#得点期待値表への書き込み
-            # run_expection(or_memo)
-            # run_expection_order(or_memo_order)
+            output.write_re_tmp(or_memo)
+            output.write_re_order_tmp(or_memo_order)
 			#初期化
             or_memo = []
             or_memo_order = []
 			#次のイニングへ行く処理
             inning += 1
-			#print(run_list)
-			#print("///////////////////////")
 
 	#9イニングでの得点を記録
     run_total = int(sum(run_list))
