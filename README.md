@@ -29,9 +29,7 @@ Open your terminal and execute command "python main.py".
 ## 4. See the results
 If the program has finished, let's check the results.  
 The results file is generated in /output_files/ automatically.  
-Initially, average runs and standard deviation are available.  
-
-(Sorry for poor. That is one of the function we should update soon... You can expand it yourself, of course.)
+Some stats are available (e.g. average run, sd, RE table,...)
 
 # Author
 Let me(twitter: @bb_analy) know if you have any questions!
