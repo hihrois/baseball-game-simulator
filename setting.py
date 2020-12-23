@@ -14,7 +14,7 @@ class Setting:
         self.OUTPUT_FILE_NAME_RE_ORDER = self.OUTPUT_FOLDER_NAME + "re_order.csv" 
         
         # game option
-        self.NUM_OF_GAMES = 1000
+        self.NUM_OF_GAMES = 10000
         self.INNING = 9
 
         # RE
