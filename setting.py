@@ -23,7 +23,7 @@ class Setting:
 
         # log5
         # log5による補正を有効にするためには，PITCHING_STATS_FILE_NAMEとBASE_STATS_FILE_NAMEを入力してください
-        self.DO_APPLY_LOG5 = True
+        self.DO_APPLY_LOG5 = False
 
         # RE
         self.DO_COMPUTE_RE = True
