@@ -2,11 +2,14 @@ import csv
 from numpy import random 
 from setting import *
 
-class Batting:
-    def __init__(self, file_name):
-        self.batting_stats = self.read_batting_stats(file_name)
 
-    def read_batting_stats(self, file_name):
+class Batting:
+    def __init__(self, file_name_pitching, file_name_base, file_name_batting, setting):
+        self.pitching_stats = self.read_pitching_stats(file_name_pitching, setting)
+        self.base_stats = self.read_pitching_stats(file_name_base, setting)
+        self.batting_stats = self.read_batting_stats(file_name_batting, setting)
+
+    def read_batting_stats(self, file_name, setting):
         """
         function: csvから打撃成績を読み込む
         input: csvファイルのパス(string)
@@ -16,9 +19,21 @@ class Batting:
         with open(file_name) as f:
             reader = csv.reader(f)
             for row in reader:
-                batting_stats.append(self.convert_batting_stats_to_probability(list(map(int, row))))
+                # batting_stats.append(self.convert_batting_stats_to_probability(list(map(int, row))))
+                probability_list = self.convert_batting_stats_to_probability(list(map(int, row)))
+                if setting.DO_APPLY_LOG5:
+                    probability_list = self.apply_log5(probability_list)
+                batting_stats.append(probability_list)
 
         return batting_stats
+
+    def read_pitching_stats(self, file_name, setting):
+        if not setting.DO_APPLY_LOG5: return
+        with open(file_name) as f:
+            reader = csv.reader(f)
+            for row in reader:
+                return self.convert_batting_stats_to_probability(list(map(int, row)))
+
 
     def convert_batting_stats_to_probability(self, batting_stats):
         """
@@ -44,6 +59,31 @@ class Batting:
         probability = list(map(lambda x: x / batting_stats[0], probability))
         
         return probability
+
+    
+    def apply_log5(self, probability):
+        def odds(x):
+            return x / (1 - x)
+
+        def log5(a, b, l):
+            return odds(a) / (odds(l) * odds(b))
+
+        output = []
+
+        # hit系
+        for i in range(4):
+            output.append(log5(probability[i], 1 - self.pitching_stats[i], self.base_stats[i]))
+
+        # bb系
+        output.append(log5(probability[4], 1 - self.pitching_stats[4], self.base_stats[4]))
+
+        # 三振系
+        output.append(log5(self.pitching_stats[5], 1 - probability[5], self.base_stats[5]))
+
+        output.append(1 - sum(output))
+
+        return output
+
 
     def simulate_batting_result(self, batting_order, batting_stats, outcount, runner):
         """

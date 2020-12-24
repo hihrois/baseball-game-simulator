@@ -13,7 +13,9 @@ class Output:
         self.re_tmp = [[[0 for i in range(30)] for i in range(8)] for i in range(3)]
         self.re_order_tmp = [[[[0 for i in range(30)] for i in range(8)] for i in range(3)]for i in range(9)]
         self.re = [[] for _ in range(3)]
+        self.rp = [[] for _ in range(3)]
         self.re_order = [[[] for _ in range(3)] for _ in range(9)]
+        self.rp_order = [[[] for _ in range(3)] for _ in range(9)]
 
     # 得点期待値表への書き込みを行う関数
     def write_re_tmp(self, or_memo):
@@ -38,11 +40,25 @@ class Output:
             with open(setting.OUTPUT_FILE_NAME_RE, 'w', newline="") as f:
                 writer = csv.writer(f)
                 for outcount in range(3):
-                    writer.writerow([round(run, 3) for run in self.re[outcount]])
+                    writer.writerow([run for run in self.re[outcount]])
                     
         if setting.DO_COMPUTE_RE_ORDER:
             with open(setting.OUTPUT_FILE_NAME_RE_ORDER, 'w', newline="") as f:
                 writer = csv.writer(f)
                 for batting_order in range(9):
                     for outcount in range(3):
-                        writer.writerow([round(run, 3) for run in self.re_order[batting_order][outcount]])
+                        writer.writerow([run for run in self.re_order[batting_order][outcount]])
+
+    def output_rp(self, setting):
+        if setting.DO_COMPUTE_RP:
+            with open(setting.OUTPUT_FILE_NAME_RP, 'w', newline="") as f:
+                writer = csv.writer(f)
+                for outcount in range(3):
+                    writer.writerow([run for run in self.rp[outcount]])
+                    
+        if setting.DO_COMPUTE_RP_ORDER:
+            with open(setting.OUTPUT_FILE_NAME_RP_ORDER, 'w', newline="") as f:
+                writer = csv.writer(f)
+                for batting_order in range(9):
+                    for outcount in range(3):
+                        writer.writerow([run for run in self.rp_order[batting_order][outcount]])
