@@ -24,9 +24,9 @@ batting_stats/sample.csv exsits initially, so refer to it when you want to know 
 Be sure to change the valuable "BATTING_STATS_FILE_NAME" (in setting.py) correctly when you make a new .csv file.  
 
 ### 2-2. pitching_stats, base_stats (optional)
-When applying log5 model, you need to add pitching_stats and base_stats.
-pitching_stats is stats of opponents'pitcher, and the construction is the same with batting_stats.
-base_stats is stats of average pitcher, ofcourse, the construction is same.
+When applying log5 model, you need to add pitching_stats and base_stats.  
+pitching_stats is stats of opponents'pitcher, and the construction is the same with batting_stats.  
+base_stats is stats of average pitcher, ofcourse, the construction is same.  
 
 ## 3. Simulate
 If you finish setting up, it is time to simulate!  
