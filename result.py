@@ -32,12 +32,13 @@ class Result:
 
         self.compute_re(output)
         self.compute_re_order(output)
+        self.compute_rp(output)
+        self.compute_rp_order(output)
 
     def compute_re(self, output):
-        print("---------RE---------")
+        # print("---------RE---------")
         for outcount in range(3):#アウトカウント
             for runner in range(8):#ランナー
-                num_list = [0, 1, 2, 12, 3, 13, 23, 123]
                 hoge = 0
                 for i in range(30):
                     hoge += i * output.re_tmp[outcount][runner][i]
@@ -45,16 +46,24 @@ class Result:
                     result = 0
                 else:
                     result = hoge / sum(output.re_tmp[outcount][runner])
-                    output.re[outcount].append(result)
-                print("{}アウト {}ランナー　{}点".format(outcount, num_list[runner], result))
-        print("")
+                output.re[outcount].append(result)
+                # print("{}アウト {}ランナー　{}点".format(outcount, num_list[runner], result))
+        # print("")
+
+    def compute_rp(self, output):
+        for outcount in range(3):#アウトカウント
+            for runner in range(8):#ランナー
+                if sum(output.re_tmp[outcount][runner]) == 0:
+                    result = 0
+                else:
+                    result = sum(output.re_tmp[outcount][runner][1:]) / sum(output.re_tmp[outcount][runner])
+                output.rp[outcount].append(result)
 
     def compute_re_order(self, output):
-        print("---------RE split by batting order---------")
+        # print("---------RE split by batting order---------")
         for batting_order in range(9):
             for outcount in range(3):#アウトカウント
                 for runner in range(8):#ランナー
-                    num_list = [0, 1, 2, 12, 3, 13, 23, 123]
                     hoge = 0
                     for k in range(30):
                         hoge += k * output.re_order_tmp[batting_order][outcount][runner][k]
@@ -62,6 +71,14 @@ class Result:
                         result = 0
                     else:
                         result = hoge / sum(output.re_order_tmp[batting_order][outcount][runner])
-                        output.re_order[batting_order][outcount].append(result)
-                    print("{}番 {}アウト {}ランナー　{}点".format(batting_order + 1, outcount, num_list[runner], result))
-        print("")
+                    output.re_order[batting_order][outcount].append(result)
+                    
+    def compute_rp_order(self, output):
+        for batting_order in range(9):
+            for outcount in range(3):#アウトカウント
+                for runner in range(8):#ランナー
+                    if sum(output.re_order_tmp[batting_order][outcount][runner]) == 0:
+                        result = 0
+                    else:
+                        result = sum(output.re_order_tmp[batting_order][outcount][runner][1:]) / sum(output.re_order_tmp[batting_order][outcount][runner])
+                    output.rp_order[batting_order][outcount].append(result)
