@@ -13,7 +13,7 @@ You need to set variables first. (e.g. number of games, number of innings, etc..
 Open "setting.py" and edit it in your own.  
 
 ## 2. Edit input
-###2-1. batting_stats
+### 2-1. batting_stats
 Second, you need to set batting stats.  
 Make a new .csv file (/batting_stats/) and write batting stats in it.  
   
@@ -23,7 +23,7 @@ batting_stats/sample.csv exsits initially, so refer to it when you want to know 
   
 Be sure to change the valuable "BATTING_STATS_FILE_NAME" (in setting.py) correctly when you make a new .csv file.  
 
-###2-2. pitching_stats, base_stats (optional)
+### 2-2. pitching_stats, base_stats (optional)
 When applying log5 model, you need to add pitching_stats and base_stats.
 pitching_stats is stats of opponents'pitcher, and the construction is the same with batting_stats.
 base_stats is stats of average pitcher, ofcourse, the construction is same.
