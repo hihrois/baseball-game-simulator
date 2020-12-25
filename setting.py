@@ -6,10 +6,12 @@ class Setting:
         dt_now = datetime.datetime.now()
         dt_now = dt_now.strftime('%Y%m%d%H%M%S')
         
-        # file
+        # input file path
         self.BATTING_STATS_FILE_NAME = "batting_stats/sample.csv"
         self.PITCHING_STATS_FILE_NAME = "input/pitching_stats/sample.csv"
         self.BASE_STATS_FILE_NAME = "input/base_stats/sample.csv"
+
+        # output file path
         self.OUTPUT_FOLDER_NAME = "output_files/result_{}/".format(dt_now)
         self.OUTPUT_FILE_NAME = self.OUTPUT_FOLDER_NAME + "mean.csv"
         self.OUTPUT_FILE_NAME_RE = self.OUTPUT_FOLDER_NAME + "re.csv" 
