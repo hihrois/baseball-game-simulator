@@ -8,7 +8,7 @@ https://hihrois-1104o.hatenablog.com/entry/yakyuu-simyu-detail
 # Usage
 ## 1. Edit setting.py
 You need to set variables first. (e.g. number of games, number of innings, etc..)  
-Open "setting.py" and edit it in your own.  
+Open "setting.py" and edit it on your own.  
 
 ## 2. Edit input
 ### 2-1. batting_stats
