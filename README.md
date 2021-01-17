@@ -1,10 +1,8 @@
 # baseball-game-simulator
 baseball-game-simulator is practical baseball simulating tool.  
-You can make unlimited patterns of batting order, and simulate it.  
-This project has just begun and is not matured.  
-Please don't hesitate to join our project and edit codes!  
+You can make unlimited patterns of batting order, and simulate it.   
 
-If you want to know details, please visit my blog!　(Japanese only)  
+If you want to know the details, please visit my blog!　(Japanese only)  
 https://hihrois-1104o.hatenablog.com/entry/yakyuu-simyu-detail
 
 # Usage
