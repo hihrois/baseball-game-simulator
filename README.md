@@ -33,7 +33,7 @@ Open your terminal and execute command "python main.py".
 ## 4. See the results
 If the program has finished, let's check the results.  
 The results file is generated in `~/output_files/` automatically.  
-Some stats are available (e.g. average run, sd, RE table,...)
+Some stats are available (e.g. average run, sd, RE table,...).
 
 # Author
 Let me(twitter: @bb_analy) know if you have any questions!
