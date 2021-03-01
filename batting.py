@@ -67,19 +67,21 @@ class Batting:
 
         def log5(a, b, l):
             return odds(a) / (odds(l) * odds(b))
+        
+        def convert_odds_to_p(odds):
+            return odds / (1 + odds)
 
         output = []
 
         # hit系
-        for i in range(4):
-            output.append(log5(probability[i], 1 - self.pitching_stats[i], self.base_stats[i]))
-
-        # bb系
-        output.append(log5(probability[4], 1 - self.pitching_stats[4], self.base_stats[4]))
+        for i in range(5):
+            output.append(convert_odds_to_p(log5(probability[i], 1 - self.pitching_stats[i], self.base_stats[i])))
 
         # 三振系
-        output.append(log5(self.pitching_stats[5], 1 - probability[5], self.base_stats[5]))
+        output.append(convert_odds_to_p(log5(self.pitching_stats[5], 1 - probability[5], self.base_stats[5])))
 
+        # 凡打
+        # output.append(convert_odds_to_p(log5(probability[6], 1 - self.pitching_stats[6], self.base_stats[6])))
         output.append(1 - sum(output))
 
         return output
