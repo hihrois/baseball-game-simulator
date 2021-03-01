@@ -81,8 +81,10 @@ class Batting:
         output.append(convert_odds_to_p(log5(self.pitching_stats[5], 1 - probability[5], self.base_stats[5])))
 
         # 凡打
-        # output.append(convert_odds_to_p(log5(probability[6], 1 - self.pitching_stats[6], self.base_stats[6])))
-        output.append(1 - sum(output))
+        output.append(convert_odds_to_p(log5(probability[6], 1 - self.pitching_stats[6], self.base_stats[6])))
+        
+        output_sum = sum(output)
+        output = list(map(lambda x: x/output_sum, output))
 
         return output
 
