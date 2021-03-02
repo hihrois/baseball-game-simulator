@@ -28,7 +28,7 @@ base_stats is stats of average pitcher(batter), the construction is also consist
 
 ## 3. Simulate
 If you finish setting up, it is time to simulate!  
-Open your terminal and execute command "python main.py".
+Open your terminal and execute command `python main.py`.
 
 ## 4. See the results
 If the program has finished, let's check the results.  
