@@ -5,6 +5,9 @@ You can make unlimited patterns of batting order, and simulate it.
 If you want to know the details, please visit my blog!　(Japanese only)  
 https://hihrois-1104o.hatenablog.com/entry/yakyuu-simyu-detail
 
+baseball game simulator は，様々な検証を行うことができるシミュレーションツールです．  
+様々な打撃成績，投手成績，打順の組み合わせなどを入力し，シミュレーションできます．  
+
 # Usage
 ## 1. Edit setting.py
 You need to set variables first. (e.g. number of games, number of innings, etc..)  
