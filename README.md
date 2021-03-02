@@ -23,8 +23,8 @@ Be sure to change the valuable "BATTING_STATS_FILE_NAME" (in setting.py) correct
 
 ### 2-2. pitching_stats, base_stats (optional)
 When applying log5 model, you need to add pitching_stats and base_stats.  
-pitching_stats is stats of opponents'pitcher, and the construction is the same with batting_stats.  
-base_stats is stats of average pitcher, ofcourse, the construction is same.  
+pitching_stats is stats of opponents'pitcher, and the construction is same with batting_stats.  
+base_stats is stats of average pitcher(batter), the construction is also consistent with batting stats and pitching stats.  
 
 ## 3. Simulate
 If you finish setting up, it is time to simulate!  
