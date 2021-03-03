@@ -29,7 +29,7 @@ https://hihrois-1104o.hatenablog.com/entry/yakyuu-simyu-detail
 これで準備は終了です．  
 ターミナルから`python main.py`を実行してください．  
 
-## 4. See the results
+## 4. See results
 プログラムが無事に終了したら，結果ファイルを確認します．  
 結果ファイルは`~/output_files/`に生成されます．  
 
