@@ -34,7 +34,7 @@ https://hihrois-1104o.hatenablog.com/entry/yakyuu-simyu-detail
 結果ファイルは`~/output_files/`に生成されます．  
 
 # Author
-何か質問ございましたら，@bb_analyまでご連絡ください！
+何か質問などございましたら，[@bb_analy](https://twitter.com/bb_analy)までご連絡ください！
 
     
 # baseball-game-simulator(English)
@@ -74,4 +74,4 @@ The results file is generated in `~/output_files/` automatically.
 Some stats are available (e.g. average run, sd, RE table,...).  
 
 # Author
-Let me(twitter: @bb_analy) know if you have any questions!　
+Let me(twitter: [@bb_analy](https://twitter.com/bb_analy)) know if you have any questions!　
