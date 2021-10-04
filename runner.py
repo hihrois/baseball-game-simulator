@@ -57,6 +57,9 @@ def run_move(outcount, runner, event, order, TRS, N):
     trs_rst = random.choice(trs_choose_list, p = trs_p_list)
     #print("%dアウト　%d塁" %(trs_outcount_list[trs_rst], trs_runner_list[trs_rst]))
     next_outcount = trs_outcount_list[trs_rst]
+    if next_outcount == 3:
+        next_outcount = 0
+        
     next_runner = trs_runner_list[trs_rst]
 
     #得点計算(アウトカウントとランナーの数+1から、次のアウトカウントと次のランナーを引いた数が得点になる)

@@ -37,7 +37,7 @@ class Setting:
         self.DO_COMPUTE_RP_ORDER = True
 
         # ターミナル表示オプション
-        self.IS_INDICATED_BOX_RESULT = True
-        self.IS_INDICATED_GAME_RESULT = True
+        self.IS_INDICATED_BOX_RESULT = False
+        self.IS_INDICATED_GAME_RESULT = False
 
         os.makedirs(self.OUTPUT_FOLDER_NAME)
