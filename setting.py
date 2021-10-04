@@ -26,7 +26,7 @@ class Setting:
 
         # log5
         # log5による補正を有効にするためには，PITCHING_STATS_FILE_NAMEとBASE_STATS_FILE_NAMEを入力してください
-        self.DO_APPLY_LOG5 = True
+        self.DO_APPLY_LOG5 = False
 
         # RE
         self.DO_COMPUTE_RE = True
@@ -37,7 +37,7 @@ class Setting:
         self.DO_COMPUTE_RP_ORDER = True
 
         # ターミナル表示オプション
-        self.IS_INDICATED_BOX_RESULT = False
-        self.IS_INDICATED_GAME_RESULT = False
+        self.IS_INDICATED_BOX_RESULT = True
+        self.IS_INDICATED_GAME_RESULT = True
 
         os.makedirs(self.OUTPUT_FOLDER_NAME)

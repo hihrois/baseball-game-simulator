@@ -1,6 +1,7 @@
 import csv
 from numpy import random 
 from setting import *
+import sys
 
 
 class Batting:
@@ -14,6 +15,8 @@ class Batting:
         function: csvから打撃成績を読み込む
         input: csvファイルのパス(string)
         output: 打撃成績を確率に変換したもの（2次元list）
+        
+        打席数，総安打数，二塁打，三塁打，本塁打，四死球，三振の各確率
         """
         batting_stats = []
         with open(file_name) as f:
