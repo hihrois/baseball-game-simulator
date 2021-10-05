@@ -2,9 +2,11 @@ from batting import *
 from constant import *
 from runner import *
 
-def game(setting, game_counter, batting, result, output):
+# def game(setting, game_counter, batting, batting_stat, result, output):
+def game(setting, game_counter, batting, batting_stat_normal, batting_stat_on_base, batting_stat_on_long_hit, approach_parameter, result, output):
     if setting.IS_INDICATED_BOX_RESULT or setting.IS_INDICATED_GAME_RESULT or (game_counter + 1) % 1000 == 0:
-        print("Game {}: ".format(game_counter + 1))
+        # print("Game {}: ".format(game_counter + 1))
+        pass
 
     #初期化
     inning, outcount, runner, batting_order = [1, 0, 0, 1]
@@ -18,7 +20,8 @@ def game(setting, game_counter, batting, result, output):
 		#打順別得点期待値表制作用、[打順要素を追加]
         or_memo_order.append([batting_order, outcount, runner207(runner), run_list[inning - 1], 0])
         #関数『打者』と関数『走塁』を呼び出す
-        event = batting.simulate_batting_result(batting_order, batting.batting_stats, outcount, runner207(runner))
+        # simulate_batting_result(batting_order, batting_stat_normal, batting_stat_on_base, batting_stat_on_long_hit, approach_parameter, outcount, runner):
+        event = batting.simulate_batting_result(batting_order, batting_stat_normal, batting_stat_on_base, batting_stat_on_long_hit, approach_parameter, outcount, runner207(runner))
         if setting.IS_INDICATED_BOX_RESULT:
             print("BoxScore Result {}".format(event))
 		
@@ -34,6 +37,9 @@ def game(setting, game_counter, batting, result, output):
 
 		#イベント前後の得点期待値変動
         # LWTS[event206(event)] += after_RE - before_RE
+
+
+        # print(outcount, runner, run)
 		
         batting_order += 1 #打順を1つ進める
         if batting_order == 10:
