@@ -121,18 +121,20 @@ class Batting:
         elif approach_parameter == 3:
             batting_stat = batting_stat_on_long_hit
         elif approach_parameter == 4:
+            batting_stat = batting_stat_normal
+
             # 出塁アプローチ発動
             if outcount == 0 and runner == 0:
                 batting_stat = batting_stat_on_base
-            elif outcount == 2 and runner >= 2:
+            elif runner >= 2:
                 batting_stat = batting_stat_on_base
             
             # 長打アプローチ発動
-            elif outcount == 2 and runner == 0:
+            if outcount == 2 and runner == 0:
                 batting_stat = batting_stat_on_long_hit
-
-            else:
-                batting_stat = batting_stat_normal
+            elif outcount == 2 and runner == 1:
+                batting_stat = batting_stat_on_long_hit
+                
 
         batting_result = random.choice(event, p = batting_stat[batting_order - 1])
 
