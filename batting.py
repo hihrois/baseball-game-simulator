@@ -122,19 +122,45 @@ class Batting:
             batting_stat = batting_stat_on_long_hit
         elif approach_parameter == 4:
             batting_stat = batting_stat_normal
-
-            # 出塁アプローチ発動
-            if outcount == 0 and runner == 0:
-                batting_stat = batting_stat_on_base
-            elif runner >= 2:
-                batting_stat = batting_stat_on_base
             
             # 長打アプローチ発動
-            if outcount == 2 and runner == 0:
-                batting_stat = batting_stat_on_long_hit
-            elif outcount == 2 and runner == 1:
-                batting_stat = batting_stat_on_long_hit
-                
+            if 1:
+                if outcount == 2 and runner == 0:
+                    batting_stat = batting_stat_on_long_hit
+                elif outcount == 2 and runner == 1:
+                    batting_stat = batting_stat_on_long_hit
+            
+            # 出塁アプローチ発動
+            if 0:
+                if outcount == 0 and runner == 0:
+                    batting_stat = batting_stat_on_base
+                elif runner >= 2:
+                    batting_stat = batting_stat_on_base
+
+
+            # 得点期待値表を参照した方法
+            EXPECTED_RUN_LIST_OUT_RUNNER = [
+                [0.441, 0.793, 1.057, 1.394, 1.279, 1.682, 1.802, 2.079]
+                ,[0.237, 0.48, 0.66, 0.886, 0.913, 1.153, 1.318, 1.492]
+                ,[0.089, 0.203, 0.306, 0.415, 0.348, 0.47, 0.528, 0.716]
+            ]
+
+            re = [0.089, 0.203, 0.237, 0.306, 0.348, 0.415, 0.441, 0.47
+            , 0.48, 0.528, 0.66, 0.716, 0.793, 0.886, 0.913, 1.057
+            , 1.153, 1.279, 1.318, 1.394, 1.492, 1.682, 1.802, 2.079]
+            # criterion = re[0]
+            
+            # 出塁しきい値
+            criterion_on_base = 1.682
+
+            if EXPECTED_RUN_LIST_OUT_RUNNER[outcount][runner] >= criterion_on_base: # 出塁は得点期待値が高いときに
+                batting_stat = batting_stat_on_base
+
+            # # 長打しきい値
+            # criterion_long_hit = 0.3
+
+            # if EXPECTED_RUN_LIST_OUT_RUNNER[outcount][runner] <= criterion_long_hit: # 長打は得点期待値が低いときに
+            #     batting_stat = batting_stat_on_long_hit
 
         batting_result = random.choice(event, p = batting_stat[batting_order - 1])
 

@@ -14,9 +14,8 @@ wOBA_COEFFICIENT = {
     ,'HR': 2.0
 }
 
-delta_dependency_1B_BB_list = [0.1, 0.2, 0.3, 0.4]
+delta_dependency_1B_BB_list = [0.1, 0.2, 0.3]
 delta_wOBA_list = [-0.005]
-# delta_wOBA_list = [0, -0.01, -0.02, -0.03, -0.04, -0.05]
 
 # アプローチ方針パラメータ
 """
@@ -33,7 +32,7 @@ def adjust_minus_probability(batting_stat):
     for batting_slot in range(9):
         for x in batting_stat[batting_slot]:
             if x < 0:
-                print('minus probability found: {}'.format(batting_stat[batting_slot]))
+                print('minus probability found:{}番 {}'.format(batting_slot + 1, batting_stat[batting_slot]))
         batting_stat[batting_slot] = list(map(lambda x: max(0, x), batting_stat[batting_slot]))
         if sum(batting_stat[batting_slot]) != 1:
             batting_stat[batting_slot] = list(map(lambda x: x / sum(batting_stat[batting_slot]), batting_stat[batting_slot]))
@@ -47,7 +46,7 @@ def compute_wOBA(batting_stat):
             + wOBA_COEFFICIENT['3B'] * batting_stat[i][2] + wOBA_COEFFICIENT['HR'] * batting_stat[i][3] \
             + wOBA_COEFFICIENT['BB'] * batting_stat[i][4]
 
-        print('{}: wOBA {}'.format(i + 1, wOBA))
+        print('{}: OBP: {}   wOBA {}  HR: {}'.format(i + 1, round(sum(batting_stat[i][0:5]) / sum(batting_stat[i]), 3), round(wOBA, 3), round(batting_stat[i][3] * 450, 0)))
 
 
 # 打撃成績の読み込み
@@ -59,7 +58,8 @@ dt_now = dt_now.strftime('%m%d%H%M%S')
 output_directory = 'output_files_{}'.format(dt_now)
 os.makedirs(output_directory)
 
-for approach_parameter in range(1, 5):
+if 0:
+    # for approach_parameter in range(1, 5):
     approach_parameter = 4
     for delta_dependency_1B_BB in delta_dependency_1B_BB_list:
         for delta_wOBA in delta_wOBA_list:
@@ -104,5 +104,105 @@ for approach_parameter in range(1, 5):
             output_.output_result(setting_)
             output_.output_re(setting_)
             output_.output_rp(setting_)
-    sys.exit()
 
+
+if 0:
+    approach_parameter = 4
+    delta_dependency_1B_BB = 0.1
+    delta_wOBA = -0.005
+    # delta_dependency_1B_BB = key[0]
+    # delta_wOBA = key[1]
+    # batting_stat = value
+
+    # 各アプローチの制約を格納
+    batting_stat_normal = individual_stat[0, 0]
+    batting_stat_on_base = individual_stat[delta_dependency_1B_BB, delta_wOBA]
+    batting_stat_on_long_hit = individual_stat[-delta_dependency_1B_BB, delta_wOBA]
+
+    # 最小値を0に補正
+    batting_stat_normal = adjust_minus_probability(batting_stat_normal)
+    batting_stat_on_base = adjust_minus_probability(batting_stat_on_base)
+    batting_stat_on_long_hit = adjust_minus_probability(batting_stat_on_long_hit)
+
+    print('delta_dependency_1B_BB: {}'.format(delta_dependency_1B_BB))
+    print('delta_wOBA: {}'.format(delta_wOBA))
+
+    # 成績確認
+    print('batting_stat_normal')
+    compute_wOBA(batting_stat_normal)
+    print('batting_stat_on_base')
+    compute_wOBA(batting_stat_on_base)
+    print('batting_stat_on_long_hit')
+    compute_wOBA(batting_stat_on_long_hit)
+
+    # クラス宣言
+    setting_ = setting.Setting(delta_dependency_1B_BB, delta_wOBA, approach_parameter, output_directory)
+    batting_ = batting.Batting(setting_.PITCHING_STATS_FILE_NAME, setting_.BASE_STATS_FILE_NAME, setting_.BATTING_STATS_FILE_NAME, setting_)
+    result_ = result.Result(setting_.NUM_OF_GAMES)
+    output_ = output.Output()
+
+    # シミュレート
+    simulate(setting_, batting_, batting_stat_normal, batting_stat_on_base, batting_stat_on_long_hit, approach_parameter, result_, output_)
+
+    # 結果の集計
+    result_.aggregate_result(setting_, output_)
+
+    # 結果の出力
+    output_.output_result(setting_)
+    output_.output_re(setting_)
+    output_.output_rp(setting_)
+
+
+
+on_base_threshold_list = [0, 0.306, 0.441, 0.528, 0.793, 1.057, 1.318, 1.682]
+long_hit_threshold_list = [0, 0.306, 0.441, 0.528, 0.793, 1.057, 1.318, 1.682]
+
+if 1:
+    # for approach_parameter in range(1, 5):
+    approach_parameter = 4
+    for on_base_threshold in on_base_threshold_list:
+        for long_hit_threshold in long_hit_threshold_list:
+            # delta_dependency_1B_BB = key[0]
+            # delta_wOBA = key[1]
+            # batting_stat = value
+
+            delta_dependency_1B_BB = 0.1
+            delta_wOBA = -0.005
+
+            # 各アプローチの制約を格納
+            batting_stat_normal = individual_stat[0, 0]
+            batting_stat_on_base = individual_stat[delta_dependency_1B_BB, delta_wOBA]
+            batting_stat_on_long_hit = individual_stat[-delta_dependency_1B_BB, delta_wOBA]
+
+            # 最小値を0に補正
+            batting_stat_normal = adjust_minus_probability(batting_stat_normal)
+            batting_stat_on_base = adjust_minus_probability(batting_stat_on_base)
+            batting_stat_on_long_hit = adjust_minus_probability(batting_stat_on_long_hit)
+
+            print('delta_dependency_1B_BB: {}'.format(delta_dependency_1B_BB))
+            print('delta_wOBA: {}'.format(delta_wOBA))
+            
+            # 成績確認
+            print('batting_stat_normal')
+            compute_wOBA(batting_stat_normal)
+            print('batting_stat_on_base')
+            compute_wOBA(batting_stat_on_base)
+            print('batting_stat_on_long_hit')
+            compute_wOBA(batting_stat_on_long_hit)
+
+            # クラス宣言
+            setting_ = setting.Setting(delta_dependency_1B_BB, delta_wOBA, approach_parameter, output_directory)
+            batting_ = batting.Batting(setting_.PITCHING_STATS_FILE_NAME, setting_.BASE_STATS_FILE_NAME, setting_.BATTING_STATS_FILE_NAME, setting_)
+            result_ = result.Result(setting_.NUM_OF_GAMES)
+            output_ = output.Output()
+
+            # シミュレート
+            simulate(setting_, batting_, batting_stat_normal, batting_stat_on_base, batting_stat_on_long_hit, approach_parameter, result_, output_)
+
+            # 結果の集計
+            result_.aggregate_result(setting_, output_)
+
+            # 結果の出力
+            output_.output_result(setting_)
+            output_.output_re(setting_)
+            output_.output_rp(setting_)
