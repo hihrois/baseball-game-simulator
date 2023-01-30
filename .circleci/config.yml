@@ -1,0 +1,398 @@
+version: 2.1
+
+executors:
+  deploy_container:
+    docker:
+      - image: hihrois/aggregater:0.0.1
+  slack_container:
+    docker:
+      - image: circleci/python:3.8.7
+
+orbs:
+  slack: circleci/slack@4.3.3
+
+commands:
+  notify_slack_pass:
+    steps:
+      - slack/notify:
+          event: pass
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":tada::tada::tada: *Success!*"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project:*\n${CIRCLE_PROJECT_REPONAME}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*When:*\n$(TZ=Asia/Tokyo date +'%Y/%m/%d %T')"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Job:*\n${CIRCLE_JOB}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author:*\n${CIRCLE_USERNAME}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n${CIRCLE_BRANCH}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Tag:*\n${CIRCLE_TAG}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Job"
+                      },
+                      "url": "$(dirname ${CIRCLE_BUILD_URL})"
+                    }
+                  ]
+                }
+              ]
+            }
+
+  notify_slack_fail:
+    steps:
+      - slack/notify:
+          event: fail
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":japanese_ogre::japanese_ogre::japanese_ogre: *Failed* :bangbang:"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project:*\n${CIRCLE_PROJECT_REPONAME}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*When:*\n$(TZ=Asia/Tokyo date +'%Y/%m/%d %T')"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Job:*\n${CIRCLE_JOB}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author:*\n${CIRCLE_USERNAME}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n${CIRCLE_BRANCH}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Tag:*\n${CIRCLE_TAG}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Job"
+                      },
+                      "url": "$(dirname ${CIRCLE_BUILD_URL})"
+                    }
+                  ]
+                }
+              ]
+            }
+
+  # masterブランチへのマージをトリガーに開発環境へ反映
+  # DEV-NPB
+  deploy-dev-npb:
+    steps:
+      - run:
+          name: execute_convmv
+          command:
+            convmv -f utf8 -t shift_jis -r ./database --notest
+      - add_ssh_keys:
+             fingerprints:
+               - "87:37:57:69:d3:e1:8c:93:84:0b:51:9c:ad:1c:11:7b"
+      - run:
+          name: remove directory
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DEV_NPB "powershell; Remove-Item ./repository/database -Recurse;"
+      - run:
+          name: add directory
+          command: |
+            zip -r database ./database
+            scp -o "StrictHostKeyChecking no" -r ./database.zip $USER_NAME@$IP_DEV_NPB:./
+            scp -o "StrictHostKeyChecking no" ./deploy.bat $USER_NAME@$IP_DEV_NPB:./
+      - run:
+          name: deploy
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DEV_NPB "powershell Expand-Archive -Path database.zip -DestinationPath ./repository&&set DB_PASSWORD=$DB_PASSWORD&&deploy.bat > log.txt"
+
+  # masterブランチへのマージをトリガーに開発環境へ反映
+  # DEV-MLB
+  deploy-dev-mlb:
+    steps:
+      - run:
+          name: execute_convmv
+          command:
+            convmv -f utf8 -t shift_jis -r ./database --notest
+      - add_ssh_keys:
+             fingerprints:
+               - "87:37:57:69:d3:e1:8c:93:84:0b:51:9c:ad:1c:11:7b"
+      - run:
+          name: remove directory
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DEV_MLB "powershell; Remove-Item ./repository/database -Recurse;"
+      - run:
+          name: add directory
+          command: |
+            zip -r database ./database
+            scp -o "StrictHostKeyChecking no" -r ./database.zip $USER_NAME@$IP_DEV_MLB:./
+            scp -o "StrictHostKeyChecking no" ./deploy.bat $USER_NAME@$IP_DEV_MLB:./
+      - run:
+          name: deploy
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DEV_MLB "powershell Expand-Archive -Path database.zip -DestinationPath ./repository&&set DB_PASSWORD=$DB_PASSWORD&&deploy.bat > log.txt"
+
+  # stagingブランチへのマージをトリガーに本番DBへ反映
+  # DB-STG-NPB
+  deploy-stg-npb:
+    steps:
+      - run:
+          name: execute_convmv
+          command:
+            convmv -f utf8 -t shift_jis -r ./database --notest
+      - add_ssh_keys:
+             fingerprints:
+               - "87:37:57:69:d3:e1:8c:93:84:0b:51:9c:ad:1c:11:7b"
+      - run:
+          name: remove directory
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_STG_NPB "powershell; Remove-Item ./repository/database -Recurse;"
+      - run:
+          name: add directory
+          command: |
+            zip -r database ./database
+            scp -o "StrictHostKeyChecking no" -r ./database.zip $USER_NAME@$IP_STG_NPB:./
+            scp -o "StrictHostKeyChecking no" ./deploy.bat $USER_NAME@$IP_STG_NPB:./
+      - run:
+          name: deploy
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_STG_NPB "powershell Expand-Archive -Path database.zip -DestinationPath ./repository&&set DB_PASSWORD=$DB_PASSWORD&&deploy.bat > log.txt"
+
+  # stagingブランチへのマージをトリガーに本番DBへ反映
+  # DB-STG-MLB
+  deploy-stg-mlb:
+    steps:
+      - run:
+          name: execute_convmv
+          command:
+            convmv -f utf8 -t shift_jis -r ./database --notest
+      - add_ssh_keys:
+             fingerprints:
+               - "87:37:57:69:d3:e1:8c:93:84:0b:51:9c:ad:1c:11:7b"
+      - run:
+          name: remove directory
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_STG_MLB "powershell; Remove-Item ./repository/database -Recurse;"
+      - run:
+          name: add directory
+          command: |
+            zip -r database ./database
+            scp -o "StrictHostKeyChecking no" -r ./database.zip $USER_NAME@$IP_STG_MLB:./
+            scp -o "StrictHostKeyChecking no" ./deploy.bat $USER_NAME@$IP_STG_MLB:./
+      - run:
+          name: deploy
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_STG_MLB "powershell Expand-Archive -Path database.zip -DestinationPath ./repository&&set DB_PASSWORD=$DB_PASSWORD&&deploy.bat > log.txt"
+
+  # releaseブランチへのマージをトリガーに本番DBへ反映
+  # DB-NPB
+  deploy-db-npb:
+    steps:
+      - run:
+          name: execute_convmv
+          command:
+            convmv -f utf8 -t shift_jis -r ./database --notest
+      - add_ssh_keys:
+             fingerprints:
+               - "87:37:57:69:d3:e1:8c:93:84:0b:51:9c:ad:1c:11:7b"
+      - run:
+          name: remove directory
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DB_NPB "powershell; Remove-Item ./repository/database -Recurse;"
+      - run:
+          name: add directory
+          command: |
+            zip -r database ./database
+            scp -o "StrictHostKeyChecking no" -r ./database.zip $USER_NAME@$IP_DB_NPB:./
+            scp -o "StrictHostKeyChecking no" ./deploy.bat $USER_NAME@$IP_DB_NPB:./
+      - run:
+          name: deploy
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DB_NPB "powershell Expand-Archive -Path database.zip -DestinationPath ./repository&&set DB_PASSWORD=$DB_PASSWORD&&deploy.bat > log.txt"
+
+  # releaseブランチへのマージをトリガーに本番DBへ反映
+  # DB-MLB
+  deploy-db-mlb:
+    steps:
+      - run:
+          name: execute_convmv
+          command:
+            convmv -f utf8 -t shift_jis -r ./database --notest
+      - add_ssh_keys:
+             fingerprints:
+               - "87:37:57:69:d3:e1:8c:93:84:0b:51:9c:ad:1c:11:7b"
+      - run:
+          name: remove directory
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DB_MLB "powershell; Remove-Item ./repository/database -Recurse;"
+      - run:
+          name: add directory
+          command: |
+            zip -r database ./database
+            scp -o "StrictHostKeyChecking no" -r ./database.zip $USER_NAME@$IP_DB_MLB:./
+            scp -o "StrictHostKeyChecking no" ./deploy.bat $USER_NAME@$IP_DB_MLB:./
+      - run:
+          name: deploy
+          command:
+            ssh -o "StrictHostKeyChecking no" $USER_NAME@$IP_DB_MLB "powershell Expand-Archive -Path database.zip -DestinationPath ./repository&&set DB_PASSWORD=$DB_PASSWORD&&deploy.bat > log.txt"
+
+jobs:
+  notification-dev:
+    executor: slack_container
+    steps:
+      - checkout
+      - notify_slack_pass
+
+  notification-stg:
+    executor: slack_container
+    steps:
+      - checkout
+      - notify_slack_pass
+
+  notification-prod:
+    executor: slack_container
+    steps:
+      - checkout
+      - notify_slack_pass
+
+  deploy_dev-npb:
+    executor: deploy_container
+    steps:
+      - checkout
+      - deploy-dev-npb
+      - notify_slack_fail
+
+  deploy_dev-mlb:
+    executor: deploy_container
+    steps:
+      - checkout
+      - deploy-dev-mlb
+      - notify_slack_fail
+
+  deploy_stg-npb:
+    executor: deploy_container
+    steps:
+      - checkout
+      - deploy-stg-npb
+      - notify_slack_fail
+
+  deploy_stg-mlb:
+    executor: deploy_container
+    steps:
+      - checkout
+      - deploy-stg-mlb
+      - notify_slack_fail
+
+  deploy_prod-npb:
+    executor: deploy_container
+    steps:
+      - checkout
+      - deploy-db-npb
+      - notify_slack_fail
+
+  deploy_prod-mlb:
+    executor: deploy_container
+    steps:
+      - checkout
+      - deploy-db-mlb
+      - notify_slack_fail
+
+workflows:
+  version: 2.1
+  release-workflow:
+    jobs:
+      # - deploy_dev-npb:
+      #     filters:
+      #       branches:
+      #         only: ci-development
+      - deploy_dev-mlb:
+          filters:
+            branches:
+              only: ci-development
+      - notification-dev:
+          filters:
+            branches:
+              only: ci-development
+          requires:
+            # - deploy_dev-npb
+            - deploy_dev-mlb
+      # - deploy_stg-npb:
+      #     filters:
+      #       branches:
+      #         only: ci-staging
+      - deploy_stg-mlb:
+          filters:
+            branches:
+              only: ci-staging
+      - notification-stg:
+          filters:
+            branches:
+              only: ci-staging
+          requires:
+            # - deploy_stg-npb
+            - deploy_stg-mlb
+      # - deploy_prod-npb:
+      #     filters:
+      #       branches:
+      #         only: ci-production
+      - deploy_prod-mlb:
+          filters:
+            branches:
+              only: ci-production
+      - notification-prod:
+          filters:
+            branches:
+              only: ci-production
+          requires:
+            # - deploy_prod-npb
+            - deploy_prod-mlb
